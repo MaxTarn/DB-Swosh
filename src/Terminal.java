@@ -44,7 +44,18 @@ public class Terminal {
    }
    public static int askForInt(String question){
       System.out.print(question + " ");
-      return getInt();
+      Integer input = null;
+      boolean goodInput = false;
+
+      while(!goodInput){
+         try {
+            input = getInt();
+            goodInput = true;
+         }catch (Exception ex){
+            System.out.print("(Invalid input)" + question);
+         }
+      }
+      return input;
    }
    //---------- int END----------
 

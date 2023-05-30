@@ -1,5 +1,11 @@
+//add users by console
+//delete users by console
+//log in
+//add account
+//delete accound
+//
+
 import com.mysql.cj.jdbc.MysqlDataSource;
-import org.mindrot.jbcrypt.BCrypt;
 
 import java.sql.*;
 
@@ -10,27 +16,62 @@ public class Main {
    static Connection connection;
    static Statement statement;
    static PreparedStatement prepStatement;
+   static Session currSession = new Session();
 
    //path to external file
    static String creddentialsPath = "src/credentials.properties";
 
 
    public static void main(String[] args) throws Exception {
-      Users.getAll()
-
       init(creddentialsPath);
-      prepStatement = connection.prepareStatement("INSERT INTO users (`person_num`, `password`, `created`, `user_name`) values(?, ?, NOW(),?);");
-      String personNum = Terminal.askForNotEmptyString("Person nummer:");
-      String password = Terminal.askForNotEmptyString("Password:");
-      String userName = Terminal.askForNotEmptyString("User Name:");
 
-      String hashedPersonNum = hashIt(personNum);
-      String hashedPassword = hashIt(password);
 
-      prepStatement.setString(1, hashedPersonNum);
-      prepStatement.setString(2, hashedPassword);
-      prepStatement.setString(3, userName);
-      prepStatement.execute();
+
+      Boolean wantsContinue = true;
+
+      while(wantsContinue){
+         System.out.println("----------");
+         System.out.println("What do you want to do?");
+         System.out.println("1: Log in");
+         System.out.println("2: Add user");
+         System.out.println("3: Edit user details");
+         System.out.println("4: Delete user");
+         System.out.println("5: Summarize a user & their accounts");
+         System.out.println("Requires log in:");
+         System.out.println("6: Send Money");
+         System.out.println("7: Steal Money");
+         System.out.println("8: Add account");
+         System.out.println("9: Remove account");
+         System.out.println("----------");
+
+         int option = Terminal.askForInt("Option:");
+         switch (option){
+            case 1:
+               UserActions.logIn(currSession);
+               break;
+            case 2:
+               UserActions.addUser();
+               break;
+            case 3:
+               UserActions.editUser();
+               break;
+            case 4:
+               break;
+            case 5:
+               break;
+            case 6:
+               break;
+            case 7:
+               break;
+            case 8:
+               break;
+            case 9:
+               break;
+         }
+      }
+
+
+
 
       PreparedStatement getAllUsers = connection.prepareStatement("SELECT * FROM users");
       ResultSet allUsers = getAllUsers.executeQuery();
@@ -97,16 +138,6 @@ public class Main {
 
 
 
-   //---------- Hashing methods ----------
 
-   //hashes a string
-   public static String hashIt(String stringToHash){
-      return BCrypt.hashpw(stringToHash, BCrypt.gensalt(15));
-   }
-
-   //compares an unhashed string to a hashed string,
-   // returns true if the hashedString was originally the same string as the notHashedString
-   public static Boolean compare(String notHashedString, String hashedString){return BCrypt.checkpw(notHashedString, hashedString);}
-   //---------- Hashing methods END----------
 
 }
