@@ -4,6 +4,8 @@ import org.mindrot.jbcrypt.BCrypt;
 import java.sql.*;
 
 public class Main {
+   //uppdatera all användar upgifter?
+   //förklara vad modell ska göra
    static MysqlDataSource dataSource = new MysqlDataSource();
    static Connection connection;
    static Statement statement;
@@ -14,6 +16,8 @@ public class Main {
 
 
    public static void main(String[] args) throws Exception {
+      Users.getAll()
+
       init(creddentialsPath);
       prepStatement = connection.prepareStatement("INSERT INTO users (`person_num`, `password`, `created`, `user_name`) values(?, ?, NOW(),?);");
       String personNum = Terminal.askForNotEmptyString("Person nummer:");
@@ -76,6 +80,7 @@ public class Main {
       try{
          System.out.print("Fetching connection to database...");
          connection = dataSource.getConnection();
+         Model.setConnection(connection);
          statement = connection.createStatement();
 
          System.out.print("done!\n");
@@ -101,9 +106,7 @@ public class Main {
 
    //compares an unhashed string to a hashed string,
    // returns true if the hashedString was originally the same string as the notHashedString
-   public static Boolean compare(String notHashedString, String hashedString){
-      return BCrypt.checkpw(notHashedString, hashedString);
-   }
+   public static Boolean compare(String notHashedString, String hashedString){return BCrypt.checkpw(notHashedString, hashedString);}
    //---------- Hashing methods END----------
 
 }
