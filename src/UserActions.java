@@ -1,4 +1,6 @@
 import java.sql.ResultSet;
+import java.text.SimpleDateFormat;
+import java.util.ArrayList;
 
 public class UserActions {
 
@@ -109,11 +111,67 @@ public class UserActions {
 
       if(userId == null)return;
       Accounts.addAccount(userId, startingMoney);
-      System.out.println("Added account to user:" + userName);
+
+   }
+   private static Boolean userExistsAndHasAccount(String userName){
+      if(!Users.exists(userName)) return false;
+      int userId = Users.getIdByUserName(userName);
+      if(!Accounts.userHasAccount(userId))return false;
+      return true;
+
+   }
+   private static Boolean accountIsRemoveAble(int userId, int id){
+      if(Boolean.FALSE.equals(Accounts.userHasAccount(userId)))return false;
+      if(Boolean.FALSE.equals(Accounts.userHasAccount(userId)))return false;
+      if(Boolean.FALSE.equals(Accounts.accountExists(id)))return false;
+      return true;
    }
    public static void removeAccount(){
-      String userName = Terminal.askForNotEmptyString("Remove acount from user:");
+      String userName = Terminal.askForNotEmptyString("Remove account from user:");
+
+      while(!userExistsAndHasAccount(userName)){
+         userName = Terminal.askForNotEmptyString("(User does not exist or does not have an account) User name:");
+      }
+
+      ResultSet allAccounts = Accounts.getAllAccountsByUserId(Users.getIdByUserName(userName));
+      try{
+         System.out.println("The accounts of" + userName+  ":");
+         System.out.println("---");
+         while(allAccounts.next()){
+            System.out.println("Account number: " + allAccounts.getInt("id"));
+            System.out.println("Monies: " + allAccounts.getInt("amount"));
+            System.out.println("---");
+         }
+      }catch (Exception ex){System.out.println(ex.getMessage());}
+      int accountToRemove = Terminal.askForInt("What account do you wish to remove:");
+      while(!accountIsRemoveAble(Users.getIdByUserName(userName), accountToRemove)) accountToRemove= Terminal.askForInt("(invalid input) Enter the account number:");
+      Accounts.deleteAccount(accountToRemove);
+   }
+   public static void sumerizeUser(){
+      String userName = Terminal.askForNotEmptyString("User name:");
       while (!Users.exists(userName))userName = Terminal.askForString("(No user by that name) User name:");
+      ResultSet user = Users.getUser(userName);
+      try{
+         user.next();
+         SimpleDateFormat format = new SimpleDateFormat("yyyy-MM-dd hh:mm:ss");
+         System.out.println("-----");
+         System.out.println("---");
+         System.out.println("User name: " + user.getString("user_name") );
+         System.out.println("Created: " + format.format(user.getDate("created")));
+         System.out.println("---");
+      }catch (Exception ex){System.out.println(ex.getMessage());}
+
+      ResultSet userAccounts = Accounts.getAllAccountsByUserId(Users.getIdByUserName(userName));
+      try {
+         while(userAccounts.next()){
+            System.out.println("Account number: " + userAccounts.getInt("id"));
+            System.out.println("Monies: " + userAccounts.getInt("amount"));
+            System.out.println("---");
+         }
+      }catch (Exception ex){
+         System.out.println(ex.getMessage());
+      }
+      System.out.println("-----");
 
    }
 }

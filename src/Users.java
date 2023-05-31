@@ -19,7 +19,7 @@ public class Users extends Model{
          if(response.next()) exists = response.getBoolean("user_exists");
          return exists;
       }catch (Exception ex) {System.out.println(ex.getMessage());}
-      return null;
+      return false;
    }
    public static ResultSet getUser(String userName){
       PreparedStatement prepState = null;
@@ -32,6 +32,22 @@ public class Users extends Model{
       }catch (Exception ex){System.out.println(ex.getMessage());}
       return null;
    }
+   public static Integer getIdByUserName(String userName){
+      if(!Users.exists(userName))return null;
+      try{
+         PreparedStatement prepState = connection.prepareStatement("SELECT id FROM users WHERE user_name=?");
+         prepState.setString(1, userName);
+         ResultSet response = prepState.executeQuery();
+         Integer id = null;
+         while(response.next())id = response.getInt("id");
+         return id;
+      }catch (Exception ex){System.out.println(ex.getMessage());}
+      return null;
+   }
+
+
+
+
    public static void addUserToDB(String personNum, String password, String userName){
       PreparedStatement prepState;
       try{

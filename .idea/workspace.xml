@@ -4,15 +4,12 @@
     <option name="autoReloadType" value="SELECTIVE" />
   </component>
   <component name="ChangeListManager">
-    <list default="true" id="82c07cc3-884a-4fe1-a304-6c41e02de01a" name="Changes" comment="good progress">
-      <change afterPath="$PROJECT_DIR$/src/Accounts.java" afterDir="false" />
+    <list default="true" id="82c07cc3-884a-4fe1-a304-6c41e02de01a" name="Changes" comment="some methods and some stuff">
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/Hasher.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/Hasher.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/Accounts.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/Accounts.java" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/src/Main.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/Main.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/Terminal.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/Terminal.java" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/src/UserActions.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/UserActions.java" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/src/Users.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/Users.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/users.sql" beforeDir="false" afterPath="$PROJECT_DIR$/src/users.sql" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -91,7 +88,7 @@
       <workItem from="1685446379327" duration="116000" />
       <workItem from="1685451506593" duration="4666000" />
       <workItem from="1685457326524" duration="12675000" />
-      <workItem from="1685527630755" duration="14478000" />
+      <workItem from="1685527630755" duration="28139000" />
     </task>
     <task id="LOCAL-00001" summary="some dependencies and other stuff">
       <created>1685306688188</created>
@@ -114,7 +111,14 @@
       <option name="project" value="LOCAL" />
       <updated>1685486020779</updated>
     </task>
-    <option name="localTasksCounter" value="4" />
+    <task id="LOCAL-00004" summary="some methods and some stuff">
+      <created>1685551725818</created>
+      <option name="number" value="00004" />
+      <option name="presentableId" value="LOCAL-00004" />
+      <option name="project" value="LOCAL" />
+      <updated>1685551725822</updated>
+    </task>
+    <option name="localTasksCounter" value="5" />
     <servers />
   </component>
   <component name="TypeScriptGeneratedFilesManager">
@@ -124,7 +128,8 @@
     <MESSAGE value="some dependencies and other stuff" />
     <MESSAGE value="more stuff" />
     <MESSAGE value="good progress" />
-    <option name="LAST_COMMIT_MESSAGE" value="good progress" />
+    <MESSAGE value="some methods and some stuff" />
+    <option name="LAST_COMMIT_MESSAGE" value="some methods and some stuff" />
   </component>
   <component name="XSLT-Support.FileAssociations.UIState">
     <expand />

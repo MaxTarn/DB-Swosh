@@ -10,8 +10,8 @@ import com.mysql.cj.jdbc.MysqlDataSource;
 import java.sql.*;
 
 public class Main {
-   //uppdatera all användar upgifter?
-   //förklara vad modell ska göra
+   //uppdatera alla ALLA användar upgifter?
+   //förklara vad modell ska göra, så som Jag gjort med class Users ??
    static MysqlDataSource dataSource = new MysqlDataSource();
    static Connection connection;
    static Statement statement;
@@ -64,6 +64,7 @@ public class Main {
                UserActions.removeAccount();
                break;
             case 7:
+               UserActions.sumerizeUser();
                break;
             case 8:
                break;
@@ -74,29 +75,7 @@ public class Main {
 
 
 
-
-      PreparedStatement getAllUsers = connection.prepareStatement("SELECT * FROM users");
-      ResultSet allUsers = getAllUsers.executeQuery();
-      while(allUsers.next()){
-         int id = allUsers.getInt("id");
-         String hashedPersonNumber = allUsers.getString("person_num");
-         String hashedpassword = allUsers.getString("password");
-         System.out.println("id: " + id);
-         System.out.println("hashed person number: " + hashedPersonNumber);
-         System.out.println("hashed password: " + hashedpassword);
-
-      }
-
-
    }
-
-
-
-
-
-
-
-
 
 
 
@@ -137,13 +116,13 @@ public class Main {
    }
 
 
-   static void close(){
+   static void close() {
       Terminal.close();
+      try {
+         Model.connection.close();
+      } catch (Exception ex) {
+      }
    }
-
-
-
-
 
 
 }
