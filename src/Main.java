@@ -25,8 +25,6 @@ public class Main {
    public static void main(String[] args) throws Exception {
       init(creddentialsPath);
 
-
-
       Boolean wantsContinue = true;
 
       while(wantsContinue){
@@ -36,12 +34,13 @@ public class Main {
          System.out.println("2: Add user");
          System.out.println("3: Edit user details");
          System.out.println("4: Delete user");
-         System.out.println("5: Summarize a user & their accounts");
+         System.out.println("5: Add a money account");
+         System.out.println("6: Remove a money account");
+         System.out.println("7: Summarize a user & their accounts");
          System.out.println("Requires log in:");
-         System.out.println("6: Send Money");
-         System.out.println("7: Steal Money");
-         System.out.println("8: Add account");
-         System.out.println("9: Remove account");
+         System.out.println("8: Send Money");
+         System.out.println("9: Steal Money");
+
          System.out.println("----------");
 
          int option = Terminal.askForInt("Option:");
@@ -56,10 +55,13 @@ public class Main {
                UserActions.editUser();
                break;
             case 4:
+               UserActions.deleteUser();
                break;
             case 5:
+               UserActions.addAccount();
                break;
             case 6:
+               UserActions.removeAccount();
                break;
             case 7:
                break;
@@ -134,6 +136,10 @@ public class Main {
 
    }
 
+
+   static void close(){
+      Terminal.close();
+   }
 
 
 

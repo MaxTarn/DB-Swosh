@@ -11,9 +11,18 @@ public class Terminal {
    }
 
 
-   //--------------------Methods that can get & diplay a certain type of data from the console --------------------
+   //--------------------Methods that can get or diplay a certain type of data from the console --------------------
 
    //---------- string ----------
+   public static String getString(){
+      String input = getInput();
+      return input;
+   }
+   public static String askForString(String question){
+      System.out.println(question + " ");
+      String input = getString();
+      return input;
+   }
    public static String getNotEmptyString(){
       String input = getInput();
       while (input.isEmpty() ) input = getInput();
@@ -96,6 +105,9 @@ public class Terminal {
 
 
 
-   //--------------------Methods that can get & diplay a certain type of data from the console END--------------------
+   //--------------------Methods that can get or diplay a certain type of data from the console END--------------------
 
+   public static void close(){
+      console.close();
+   }
 }

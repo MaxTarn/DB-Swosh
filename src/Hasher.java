@@ -1,7 +1,7 @@
 import org.mindrot.jbcrypt.BCrypt;
 
 public class Hasher {
-   //class is just used to that it is a bit more readable in code
+   //to standardise the calls to BCrypt
 
    //---------- Hashing methods ----------
 
