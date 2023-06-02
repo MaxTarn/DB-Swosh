@@ -10,11 +10,8 @@ import com.mysql.cj.jdbc.MysqlDataSource;
 import java.sql.*;
 
 public class Main {
-   //uppdatera alla ALLA användar upgifter?
-   //förklara vad modell ska göra, så som Jag gjort med class Users ??
    static MysqlDataSource dataSource = new MysqlDataSource();
    static Connection connection;
-   static Statement statement;
    static PreparedStatement prepStatement;
    static Session currSession = new Session();
 
@@ -30,16 +27,17 @@ public class Main {
       while(wantsContinue){
          System.out.println("----------");
          System.out.println("What do you want to do?");
-         System.out.println("1: Log in");
-         System.out.println("2: Add user");
-         System.out.println("3: Edit user details");
-         System.out.println("4: Delete user");
-         System.out.println("5: Add a money account");
-         System.out.println("6: Remove a money account");
-         System.out.println("7: Summarize a user & their accounts");
+         System.out.println("1:  Log in");
+         System.out.println("2:  Add user");
+         System.out.println("3:  Edit user details");
+         System.out.println("4:  Delete user");
+         System.out.println("5:  Add a money account");
+         System.out.println("6:  Remove a money account");
+         System.out.println("7:  Summarize a user & their accounts");
          System.out.println("Requires log in:");
-         System.out.println("8: Send Money");
-         System.out.println("9: Steal Money");
+         System.out.println("8:  Send Money");
+         System.out.println("9:  Receive Money");
+         System.out.println("10: List transaction for an account between two dates");
 
          System.out.println("----------");
 
@@ -67,8 +65,14 @@ public class Main {
                UserActions.sumerizeUser();
                break;
             case 8:
+               if(!currSession.loggedIn)UserActions.logIn(currSession);
+               UserActions.sendMoney(currSession);
                break;
             case 9:
+               if(!currSession.loggedIn)UserActions.logIn(currSession);
+               break;
+            case 10:
+               if(!currSession.loggedIn)UserActions.logIn(currSession);
                break;
          }
       }
@@ -103,7 +107,6 @@ public class Main {
          System.out.print("Fetching connection to database...");
          connection = dataSource.getConnection();
          Model.setConnection(connection);
-         statement = connection.createStatement();
 
          System.out.print("done!\n");
 

@@ -11,6 +11,5 @@ public abstract class Model {
       connection = conn;
    }
 
-   //will get all rows
-   public abstract ResultSet getAll() throws SQLException;
+   public abstract ResultSet getAll()  ;
 }

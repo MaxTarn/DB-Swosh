@@ -6,9 +6,12 @@ public class Users extends Model{
 
 
 
-   public ResultSet getAll() throws SQLException {
-      PreparedStatement preparedStatement = connection.prepareStatement("SELECT * FROM users;");
-      return preparedStatement.executeQuery();
+   public ResultSet getAll()   {
+      try {
+         PreparedStatement preparedStatement = connection.prepareStatement("SELECT * FROM users;");
+         return preparedStatement.executeQuery();
+      }catch (Exception ex){}
+      return null;
    }
    public static Boolean exists(String userName){
       try{

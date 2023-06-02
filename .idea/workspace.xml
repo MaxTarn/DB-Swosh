@@ -4,9 +4,14 @@
     <option name="autoReloadType" value="SELECTIVE" />
   </component>
   <component name="ChangeListManager">
-    <list default="true" id="82c07cc3-884a-4fe1-a304-6c41e02de01a" name="Changes" comment="some methods and some stuff">
+    <list default="true" id="82c07cc3-884a-4fe1-a304-6c41e02de01a" name="Changes" comment="not much">
+      <change afterPath="$PROJECT_DIR$/src/Transactions.java" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/Accounts.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/Accounts.java" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/src/Main.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/Main.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/Model.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/Model.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/UserActions.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/UserActions.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/Users.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/Users.java" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -87,7 +92,8 @@
       <workItem from="1685457326524" duration="12675000" />
       <workItem from="1685527630755" duration="28173000" />
       <workItem from="1685610114511" duration="615000" />
-      <workItem from="1685616695835" duration="1702000" />
+      <workItem from="1685616695835" duration="2333000" />
+      <workItem from="1685718121649" duration="6062000" />
     </task>
     <task id="LOCAL-00001" summary="some dependencies and other stuff">
       <created>1685306688188</created>
@@ -124,7 +130,14 @@
       <option name="project" value="LOCAL" />
       <updated>1685572234293</updated>
     </task>
-    <option name="localTasksCounter" value="6" />
+    <task id="LOCAL-00006" summary="not much">
+      <created>1685620961344</created>
+      <option name="number" value="00006" />
+      <option name="presentableId" value="LOCAL-00006" />
+      <option name="project" value="LOCAL" />
+      <updated>1685620961344</updated>
+    </task>
+    <option name="localTasksCounter" value="7" />
     <servers />
   </component>
   <component name="TypeScriptGeneratedFilesManager">
@@ -135,7 +148,8 @@
     <MESSAGE value="more stuff" />
     <MESSAGE value="good progress" />
     <MESSAGE value="some methods and some stuff" />
-    <option name="LAST_COMMIT_MESSAGE" value="some methods and some stuff" />
+    <MESSAGE value="not much" />
+    <option name="LAST_COMMIT_MESSAGE" value="not much" />
   </component>
   <component name="XSLT-Support.FileAssociations.UIState">
     <expand />

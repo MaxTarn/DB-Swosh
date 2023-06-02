@@ -174,4 +174,11 @@ public class UserActions {
       System.out.println("-----");
 
    }
+   public static void sendMoney(Session currSession){
+      try{
+
+      }catch (Exception ex){
+         System.out.println(ex.getMessage());
+      }
+   }
 }

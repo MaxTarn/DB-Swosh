@@ -11,28 +11,18 @@ public class Accounts extends Model{
       }catch (Exception ex){System.out.println(ex.getMessage());}
       return null;
    }
-
-
-
-
-
-
-
-/*   public static int getAmountbyId(){
+   public static int getAmountbyId(int accountId){
       try{
-         PreparedStatement prepState = connection.prepareStatement("SELECT ");
+         PreparedStatement prepState = connection.prepareStatement("SELECT amount FROM accounts WHERE id=?");
+         prepState.setInt(1, accountId);
+         ResultSet response = prepState.executeQuery();
+         response.next();
+         return response.getInt("id");
       }catch (Exception ex){
          System.out.println(ex.getMessage());
       }
-   }*/
-
-
-
-
-
-
-
-
+      return -1;
+   }
    public static ResultSet getAllAccountsByUserId(int userId){
       try {
          PreparedStatement prepState = connection.prepareStatement("SELECT * FROM accounts WHERE user_id=?");
@@ -41,7 +31,6 @@ public class Accounts extends Model{
       }catch (Exception ex){System.out.println(ex.getMessage());}
       return null;
    }
-
    public static Boolean userHasAccount(int userID){
       try{
          PreparedStatement prepState = connection.prepareStatement("SELECT EXISTS(SELECT 1 FROM accounts WHERE user_id=?) AS exists_row;");
@@ -52,7 +41,7 @@ public class Accounts extends Model{
       }catch (Exception ex){
          System.out.println(ex.getMessage());
       }
-      return null;
+      return false;
    }
    public static Boolean accountExists(int accountId){
       try{
@@ -80,13 +69,6 @@ public class Accounts extends Model{
       } catch (Exception ex) {System.out.println(ex.getMessage());}
       return 0;
    }
-
-
-
-
-
-
-
    public static void addAccount(int userId, int amount ){
       try{
          PreparedStatement prepState = connection.prepareStatement("INSERT INTO accounts (user_id, amount) VALUES(?,?);");
@@ -107,5 +89,23 @@ public class Accounts extends Model{
       }catch (Exception ex){
 
       }
+   }
+   //TODO
+   public static Boolean checkAmount(int accountId, double amount){
+      try{
+         PreparedStatement prepState = connection.prepareStatement("SELECT amount>=? AS meets_minimum_amount FROM accounts WHERE id =?");
+         prepState.setDouble(1, amount);
+         prepState.setInt(2, accountId);
+         ResultSet response = prepState.executeQuery();
+         response.next();
+         Boolean accountHasAmount = Boolean.;
+      }catch (Exception ex){
+         System.out.println(ex.getMessage());
+      }
+   }
+   //TODO
+   public static void takeMoneyFromAccount(int accountId, double amount ){
+      if(accountExists(accountId))return;
+
    }
 }
