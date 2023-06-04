@@ -5,18 +5,7 @@
   </component>
   <component name="ChangeListManager">
     <list default="true" id="82c07cc3-884a-4fe1-a304-6c41e02de01a" name="Changes" comment="all functions work and now creates the tables if they don't already exist">
-      <change beforePath="$PROJECT_DIR$/.idea/inspectionProfiles/Project_Default.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/inspectionProfiles/Project_Default.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/Accounts.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/Accounts.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/DBStructure.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/DBStructure.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/Main.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/Main.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/Terminal.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/Terminal.java" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/src/Transactions.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/Transactions.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/UserActions.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/UserActions.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/Users.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/Users.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/accounts.sql" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/databaseStructure.sql" beforeDir="false" afterPath="$PROJECT_DIR$/src/databaseStructure.sql" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/users.sql" beforeDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -100,7 +89,7 @@
       <workItem from="1685616695835" duration="2333000" />
       <workItem from="1685718121649" duration="6783000" />
       <workItem from="1685796012758" duration="7434000" />
-      <workItem from="1685868150452" duration="28621000" />
+      <workItem from="1685868150452" duration="28861000" />
     </task>
     <task id="LOCAL-00001" summary="some dependencies and other stuff">
       <created>1685306688188</created>
@@ -151,7 +140,14 @@
       <option name="project" value="LOCAL" />
       <updated>1685724395178</updated>
     </task>
-    <option name="localTasksCounter" value="8" />
+    <task id="LOCAL-00008" summary="all functions work and now creates the tables if they don't already exist">
+      <created>1685910269664</created>
+      <option name="number" value="00008" />
+      <option name="presentableId" value="LOCAL-00008" />
+      <option name="project" value="LOCAL" />
+      <updated>1685910269664</updated>
+    </task>
+    <option name="localTasksCounter" value="9" />
     <servers />
   </component>
   <component name="TypeScriptGeneratedFilesManager">

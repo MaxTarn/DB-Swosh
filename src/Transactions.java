@@ -22,9 +22,11 @@ public class Transactions extends Model{
          prepState.setInt(2, toAccountId);
          prepState.setDouble(3, amount);
          prepState.execute();
+         prepState.close();
       }catch (Exception ex){
          System.out.println(ex.getMessage());
       }
+
    }
    public static ResultSet getTransactionHistory(Date from, Date to, int accountId){
       try {
