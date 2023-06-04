@@ -1,6 +1,8 @@
+import java.sql.Date;
 import java.sql.ResultSet;
+import java.sql.Timestamp;
 import java.text.SimpleDateFormat;
-import java.util.ArrayList;
+import java.util.Arrays;
 
 public class UserActions {
 
@@ -39,7 +41,7 @@ public class UserActions {
 
    public static void addUser(){
 
-      String personNum = String.valueOf(Terminal.askForInt("Person nummer:"));
+      int personNum = Terminal.askForInt("Person number:");
       String password = Terminal.askForNotEmptyString("Password:");
       String userName = Terminal.askForNotEmptyString("User Name:");
 
@@ -50,7 +52,7 @@ public class UserActions {
          return;
       }
 
-      String hashedPersonNum = Hasher.hashIt(personNum);
+      String hashedPersonNum = Hasher.hashIt(String.valueOf(personNum));
       String hashedPassword = Hasher.hashIt(password);
 
       Users.addUserToDB(hashedPersonNum, hashedPassword, userName);
@@ -84,12 +86,12 @@ public class UserActions {
       String newPassword = Terminal.askForString("New password:");
       String newUserName = Terminal.askForString("New user name:");
 
-      while (!Users.exists(newUserName))newUserName = Terminal.askForString("(User name taken) New user name:");
+      while (Users.exists(newUserName))newUserName = Terminal.askForString("(User name taken) New user name:");
 
       if(!newPersonNum.equals(""))Users.updatePersonNum(userId, Hasher.hashIt(newPersonNum));
       if(!newPassword.equals(""))Users.updatePassword(userId, Hasher.hashIt(newPassword));
-      if(!newUserName.equals(""))Users.updateUserName(userId, Hasher.hashIt(newUserName));
-      System.out.println("Updated the field you wanted");
+      if(!newUserName.equals(""))Users.updateUserName(userId, newUserName);
+      System.out.println("Updated the field(s) you wanted");
    }
    public static void deleteUser(){
       String userName = Terminal.askForNotEmptyString("What user do you want to delete? Enter the user name:");
@@ -175,10 +177,98 @@ public class UserActions {
 
    }
    public static void sendMoney(Session currSession){
-      try{
+      if(!currSession.isLoggedIn()) return;
+      if(!Accounts.userHasAccount(currSession.getUserID())) return;
 
+      int fromAccountId = Terminal.askForInt("Your account number:");
+      while(!Accounts.accountBelongsTo(fromAccountId, currSession.getUserID())){
+         fromAccountId = Terminal.askForInt("Invalid number. Try again:");
+      }
+
+
+      int toAccountId = Terminal.askForInt("Send to account number:");
+      while(Boolean.FALSE.equals(Accounts.accountExists(toAccountId))){
+         toAccountId = Terminal.askForInt("Invalid account. Try again:");
+      }
+
+
+      double amountToSend = Terminal.askForDouble("Amount to send:");
+      while(!Accounts.hasAtleastAmount(toAccountId, amountToSend)){
+         amountToSend = Terminal.askForDouble("Invalid amount. Try again:");
+      }
+
+
+      try{
+         Accounts.takeMoneyFromAccount(fromAccountId, amountToSend);
+         Accounts.addMoneyToAccount(toAccountId,amountToSend);
+         Transactions.recordTransaction(fromAccountId, toAccountId, amountToSend);
       }catch (Exception ex){
          System.out.println(ex.getMessage());
       }
+   }
+   public static void takeMoney(Session currSession){
+      if(!currSession.isLoggedIn()) return;
+      if(!Accounts.userHasAccount(currSession.getUserID())) return;
+
+      int toAccountId = Terminal.askForInt("Your account number:");
+      while(!Accounts.accountBelongsTo(toAccountId, currSession.getUserID())){
+         toAccountId = Terminal.askForInt("Invalid number. Try again:");
+      }
+
+
+      int fromAccountId = Terminal.askForInt("Take from account number:");
+      while(Boolean.FALSE.equals(Accounts.accountExists(fromAccountId))){
+         fromAccountId = Terminal.askForInt("Invalid number. Try again:");
+      }
+
+
+      double amountToTake = Terminal.askForDouble("Amount to take:");
+      while(!Accounts.hasAtleastAmount(fromAccountId, amountToTake)){
+         amountToTake = Terminal.askForDouble("Invalid amount. Try again:");
+      }
+
+      try{
+         Accounts.takeMoneyFromAccount(fromAccountId, amountToTake);
+         Accounts.addMoneyToAccount(toAccountId,amountToTake);
+         Transactions.recordTransaction(fromAccountId, toAccountId, amountToTake);
+      }catch (Exception ex){
+         System.out.println(ex.getMessage());
+      }
+   }
+   public static void listTransactions(Session currSession){
+      if(Boolean.FALSE.equals(Accounts.userHasAccount(currSession.getUserID())))return;
+
+      int accountId = Terminal.askForInt("Your Account number:");
+      while(Boolean.FALSE.equals(Accounts.accountExists(accountId)) || !Accounts.accountBelongsTo(accountId, currSession.getUserID())){
+         accountId = Terminal.askForInt("invalid number. Try again:");
+      }
+
+      Date startingDate = Terminal.askForDate("Starting date:");
+      Date endingDate = Terminal.askForDate("Ending date:");
+
+      while(endingDate.before(startingDate)){
+         endingDate = Terminal.askForDate("(ending date cannot be before the starting date... duh) try again:");
+      }
+      ResultSet response = Transactions.getTransactionHistory(startingDate, endingDate, accountId);
+
+      try {
+         while(response.next()){
+            Timestamp time = response.getTimestamp("time");
+            int fromAccount = response.getInt("from_account_id");
+            int toAccount = response.getInt("to_account_id");
+            double amount = response.getDouble("amount");
+            if(fromAccount == accountId){
+
+               System.out.println("Transaction sent on date " + time + ", to account number " + toAccount + ", totaling: " + amount);
+            }else if(toAccount == accountId){
+               System.out.println("Transaction received on date "+ time + ", from account number " + fromAccount + ", totaling: " + amount);
+            }
+
+
+         }
+      }catch (Exception ex){
+         System.out.println(Arrays.toString(ex.getStackTrace()));
+      }
+
    }
 }

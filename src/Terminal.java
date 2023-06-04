@@ -1,13 +1,13 @@
+import java.text.ParseException;
 import java.text.SimpleDateFormat;
-import java.util.Calendar;
-import java.util.Date;
+import java.sql.Date;
 import java.util.Scanner;
 
 public class Terminal {
    static Scanner console = new Scanner(System.in);
 
    public static String getInput(){
-      return console.nextLine().trim();
+      return console.nextLine();
    }
 
 
@@ -15,13 +15,11 @@ public class Terminal {
 
    //---------- string ----------
    public static String getString(){
-      String input = getInput();
-      return input;
+      return getInput();
    }
    public static String askForString(String question){
       System.out.println(question + " ");
-      String input = getString();
-      return input;
+      return getString();
    }
    public static String getNotEmptyString(){
       String input = getInput();
@@ -37,12 +35,21 @@ public class Terminal {
 
    //---------- double ----------
    public static double getDouble(){
-      double input = Double.parseDouble(getInput());
-      return input;
+      return Double.parseDouble(getInput());
    }
    public static double askForDouble(String question){
       System.out.print(question + " ");
-      return getDouble();
+      double input = -1;
+      boolean goodInput = false;
+      while(!goodInput){
+         try {
+            input = getDouble();
+            goodInput = true;
+         }catch (Exception ex){
+            System.out.print("(Invalid input)" + question);
+         }
+      }
+      return input;
    }
    //---------- double END----------
 
@@ -71,35 +78,23 @@ public class Terminal {
 
 
    //---------- Date ----------
-   public static Date getDate(){
+   public static Date askForDate(String question) {
+      System.out.println("(format: yyyy-MM-dd HH:mm:ss) " + question);
       SimpleDateFormat dateFormat = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
-      String input = getNotEmptyString();
-      try {
-         Date date = dateFormat.parse(input);
-         return date;
-      }catch (Exception ex){
-         System.out.println(ex.getMessage());
+      Date date;
+
+      while (true) {
+         System.out.print(question);
+         String userInput = console.nextLine();
+
+         try {
+            java.util.Date utilDate = dateFormat.parse(userInput);
+            date = new Date(utilDate.getTime());
+            return date;
+         } catch (ParseException e) {
+            System.out.println("Invalid date format. Please try again.");
+         }
       }
-      return null;
-   }
-   public static Date askForDate(String question){
-      System.out.print(question + "(format (yyyy-MM-dd HH:mm:ss) ) ");
-      return getDate();
-   }
-
-
-   public static String askForDateAsString(String question){
-      Calendar calendar = Calendar.getInstance();
-      calendar.setTime(askForDate(question));
-
-      int year = calendar.get(Calendar.YEAR);
-      int month = calendar.get(Calendar.MONTH) + 1;  // why is month is zero-based???
-      int day = calendar.get(Calendar.DAY_OF_MONTH);
-      int hour = calendar.get(Calendar.HOUR_OF_DAY);
-      int minute = calendar.get(Calendar.MINUTE);
-      int second = calendar.get(Calendar.SECOND);
-
-      return year + "-" + month + "-" + day + " " + hour + ":" + minute + ":" + second;
    }
    //---------- Date END----------
 

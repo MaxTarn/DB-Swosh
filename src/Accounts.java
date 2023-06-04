@@ -1,6 +1,6 @@
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
-import java.sql.SQLException;
+import java.util.Arrays;
 
 public class Accounts extends Model{
    @Override
@@ -8,7 +8,7 @@ public class Accounts extends Model{
       try {
          PreparedStatement prepState = connection.prepareStatement("SELECT * FROM accounts");
          return prepState.executeQuery();
-      }catch (Exception ex){System.out.println(ex.getMessage());}
+      }catch (Exception ex){System.out.println(Arrays.toString(ex.getStackTrace()));}
       return null;
    }
    public static int getAmountbyId(int accountId){
@@ -17,9 +17,9 @@ public class Accounts extends Model{
          prepState.setInt(1, accountId);
          ResultSet response = prepState.executeQuery();
          response.next();
-         return response.getInt("id");
+         return response.getInt("amount");
       }catch (Exception ex){
-         System.out.println(ex.getMessage());
+         System.out.println(Arrays.toString(ex.getStackTrace()));
       }
       return -1;
    }
@@ -28,7 +28,7 @@ public class Accounts extends Model{
          PreparedStatement prepState = connection.prepareStatement("SELECT * FROM accounts WHERE user_id=?");
          prepState.setInt(1, userId);
          return prepState.executeQuery();
-      }catch (Exception ex){System.out.println(ex.getMessage());}
+      }catch (Exception ex){System.out.println(Arrays.toString(ex.getStackTrace()));}
       return null;
    }
    public static Boolean userHasAccount(int userID){
@@ -39,7 +39,7 @@ public class Accounts extends Model{
          prepState.close();
          return result;
       }catch (Exception ex){
-         System.out.println(ex.getMessage());
+         System.out.println(Arrays.toString(ex.getStackTrace()));
       }
       return false;
    }
@@ -53,10 +53,29 @@ public class Accounts extends Model{
          prepState.close();
          return exists;
       }catch (Exception ex){
-         System.out.println(ex.getMessage());
+         System.out.println(Arrays.toString(ex.getStackTrace()));
       }
       return null;
    }
+
+   public static Boolean accountBelongsTo(int accountId, int userId){
+      if(Boolean.FALSE.equals(accountExists(accountId)))return false;
+      if(!userHasAccount(userId))return false;
+
+      try {
+         PreparedStatement prepState = connection.prepareStatement("SELECT COUNT(*) AS count FROM accounts WHERE id = ? AND user_id = ?");
+         prepState.setInt(1, accountId);
+         prepState.setInt(2, userId);
+         ResultSet resultSet = prepState.executeQuery();
+         resultSet.next();
+         return resultSet.getInt("count") > 0;
+      }catch (Exception ex){
+         System.out.println(Arrays.toString(ex.getStackTrace()));
+      }
+
+      return false;
+   }
+   //gets the number of accounts a user has
    public static int getAccountCount(int userId) {
       if(!userHasAccount(userId))return 0;
       try {
@@ -66,9 +85,11 @@ public class Accounts extends Model{
          prepState.close();
          response.next();
          return response.getInt("count");
-      } catch (Exception ex) {System.out.println(ex.getMessage());}
+      } catch (Exception ex) {System.out.println(Arrays.toString(ex.getStackTrace()));}
       return 0;
    }
+
+   //adds account
    public static void addAccount(int userId, int amount ){
       try{
          PreparedStatement prepState = connection.prepareStatement("INSERT INTO accounts (user_id, amount) VALUES(?,?);");
@@ -77,8 +98,10 @@ public class Accounts extends Model{
          prepState.execute();
          System.out.println("Added account to user");
       }catch (Exception ex){
-         System.out.println(ex.getMessage());}
+         System.out.println(Arrays.toString(ex.getStackTrace()));}
    }
+
+   //removes account
    public static void deleteAccount(int accountId){
       try{
          PreparedStatement prepState = connection.prepareStatement("DELETE FROM accounts WHERE id=?");
@@ -86,26 +109,50 @@ public class Accounts extends Model{
          prepState.execute();
          System.out.println("Account Deleted.");
          prepState.close();
-      }catch (Exception ex){
+      }catch (Exception ignored){
 
       }
    }
-   //TODO
-   public static Boolean checkAmount(int accountId, double amount){
+   //checkes if the amount is ATLEAST
+   public static Boolean hasAtleastAmount(int accountId, double amount){
       try{
-         PreparedStatement prepState = connection.prepareStatement("SELECT amount>=? AS meets_minimum_amount FROM accounts WHERE id =?");
+         PreparedStatement prepState = connection.prepareStatement("SELECT CASE WHEN amount >= ? THEN 1 ELSE 0 END AS meets_minimum_amount FROM accounts WHERE id = ?");
          prepState.setDouble(1, amount);
          prepState.setInt(2, accountId);
          ResultSet response = prepState.executeQuery();
          response.next();
-         Boolean accountHasAmount = Boolean.;
+         int queryResponse = response.getInt("meets_minimum_amount");
+         return queryResponse == 1;
       }catch (Exception ex){
-         System.out.println(ex.getMessage());
+         System.out.println(Arrays.toString(ex.getStackTrace()));
+         return false;
       }
    }
-   //TODO
+   //removes money from an account
    public static void takeMoneyFromAccount(int accountId, double amount ){
-      if(accountExists(accountId))return;
+      if(Boolean.FALSE.equals(accountExists(accountId)))return;
+      try{
+         PreparedStatement prepState = connection.prepareStatement("UPDATE accounts SET amount = amount - ? WHERE id = ?");
+         prepState.setDouble(1, amount);
+         prepState.setInt(2, accountId);
+         prepState.execute();
+         prepState.close();
+      }catch (Exception ex) {
+         System.out.println(Arrays.toString(ex.getStackTrace()));
+      }
 
+   }
+   //adds money to an account
+   public static void addMoneyToAccount(int accountId, double amount){
+      if(Boolean.FALSE.equals(accountExists(accountId)))return;
+      try {
+         PreparedStatement prepState = connection.prepareStatement("UPDATE accounts SET amount = amount + ? WHERE id = ?");
+         prepState.setDouble(1, amount);
+         prepState.setInt(2, accountId);
+         prepState.executeUpdate();
+         prepState.close();
+      }catch (Exception ex){
+         System.out.println(Arrays.toString(ex.getStackTrace()));
+      }
    }
 }

@@ -1,6 +1,5 @@
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
-import java.sql.SQLException;
 
 public class Users extends Model{
 
@@ -10,7 +9,7 @@ public class Users extends Model{
       try {
          PreparedStatement preparedStatement = connection.prepareStatement("SELECT * FROM users;");
          return preparedStatement.executeQuery();
-      }catch (Exception ex){}
+      }catch (Exception ignored){}
       return null;
    }
    public static Boolean exists(String userName){
@@ -25,13 +24,12 @@ public class Users extends Model{
       return false;
    }
    public static ResultSet getUser(String userName){
-      PreparedStatement prepState = null;
+      PreparedStatement prepState;
       try{
          prepState = connection.prepareStatement("SELECT * FROM users WHERE user_name=?;");
          prepState.setString(1, userName);
          System.out.println("Contacting Database...");
-         ResultSet response = prepState.executeQuery();
-         return response;
+         return prepState.executeQuery();
       }catch (Exception ex){System.out.println(ex.getMessage());}
       return null;
    }
@@ -58,6 +56,7 @@ public class Users extends Model{
          prepState.setString(1, personNum);
          prepState.setString(2, password);
          prepState.setString(3, userName);
+         prepState.executeUpdate();
       }catch (Exception ex){System.out.println(ex.getMessage());}
 
    }

@@ -9,20 +9,23 @@ import com.mysql.cj.jdbc.MysqlDataSource;
 
 import java.sql.*;
 
+
 public class Main {
    static MysqlDataSource dataSource = new MysqlDataSource();
    static Connection connection;
-   static PreparedStatement prepStatement;
+
    static Session currSession = new Session();
 
    //path to external file
    static String creddentialsPath = "src/credentials.properties";
 
 
+   //user name number is both the password and the person number
+   //ex. user7's person number = 7 , user7's password = 7
    public static void main(String[] args) throws Exception {
       init(creddentialsPath);
 
-      Boolean wantsContinue = true;
+      boolean wantsContinue = true;
 
       while(wantsContinue){
          System.out.println("----------");
@@ -38,42 +41,41 @@ public class Main {
          System.out.println("8:  Send Money");
          System.out.println("9:  Receive Money");
          System.out.println("10: List transaction for an account between two dates");
+         System.out.println("11: Exists the program");
 
          System.out.println("----------");
 
          int option = Terminal.askForInt("Option:");
-         switch (option){
-            case 1:
+         switch (option) {
+            case 1 -> {
+               if (currSession.isLoggedIn()) {
+                  System.out.println("You are already logged in");
+                  return;
+               }
                UserActions.logIn(currSession);
-               break;
-            case 2:
-               UserActions.addUser();
-               break;
-            case 3:
-               UserActions.editUser();
-               break;
-            case 4:
-               UserActions.deleteUser();
-               break;
-            case 5:
-               UserActions.addAccount();
-               break;
-            case 6:
-               UserActions.removeAccount();
-               break;
-            case 7:
-               UserActions.sumerizeUser();
-               break;
-            case 8:
-               if(!currSession.loggedIn)UserActions.logIn(currSession);
+            }
+            case 2 -> UserActions.addUser();
+            case 3 -> UserActions.editUser();
+            case 4 -> UserActions.deleteUser();
+            case 5 -> UserActions.addAccount();
+            case 6 -> UserActions.removeAccount();
+            case 7 -> UserActions.sumerizeUser();
+            case 8 -> {
+               if (!currSession.loggedIn) {
+                  System.out.println("Log in.");
+                  UserActions.logIn(currSession);
+               }
                UserActions.sendMoney(currSession);
-               break;
-            case 9:
-               if(!currSession.loggedIn)UserActions.logIn(currSession);
-               break;
-            case 10:
-               if(!currSession.loggedIn)UserActions.logIn(currSession);
-               break;
+            }
+            case 9 -> {
+               if (!currSession.loggedIn) {
+                  System.out.println("Log in.");
+                  UserActions.logIn(currSession);
+               }
+               UserActions.takeMoney(currSession);
+            }
+            case 10 -> UserActions.listTransactions(currSession);
+            case 11 -> wantsContinue = false;
          }
       }
 
@@ -86,6 +88,7 @@ public class Main {
 
    //inits the communication with the database
    static void init(String credentialsPath) throws Exception {
+
       Credentials.init(credentialsPath);
 
       //configuring dataSource
@@ -102,20 +105,27 @@ public class Main {
          System.exit(0);
       }
 
-
       try{
          System.out.print("Fetching connection to database...");
          connection = dataSource.getConnection();
          Model.setConnection(connection);
-
          System.out.print("done!\n");
-
       }
       catch(SQLException e){
          System.out.print("failed!\n");
-         System.exit(0);
+         System.out.println(e.getMessage());
       }
 
+      //checks if there is a table called users
+      //and if not assumes that all other tables are not there either
+      //creates tables and then inserts some placeholder data
+      Statement statement = connection.createStatement();
+      ResultSet resultSet = statement.executeQuery("SHOW TABLES LIKE 'users'");
+      if (!resultSet.next()) {
+         DBStructure.makeTables(connection);
+         DBStructure.insert(connection);
+      }
+      resultSet.close();
    }
 
 
@@ -123,9 +133,10 @@ public class Main {
       Terminal.close();
       try {
          Model.connection.close();
-      } catch (Exception ex) {
+      } catch (Exception ignored) {
       }
    }
+
 
 
 }
